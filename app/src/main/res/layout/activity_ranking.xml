@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".Ranking">
 
+    <TableLayout
+        android:id="@+id/rankingTable"
+        android:layout_width="408dp"
+        android:layout_height="507dp"
+        android:stretchColumns="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow android:layout_height="50mm">
+
+            <TextView
+                android:layout_width="40mm"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="NICKNAME" />
+
+            <TextView
+                android:gravity="right"
+                android:paddingRight="10mm"
+                android:text="INTENTOS" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/playAgainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play Again"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.853" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

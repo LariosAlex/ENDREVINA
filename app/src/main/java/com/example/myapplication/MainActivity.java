@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -21,13 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
         final Button button = findViewById(R.id.submitButton);
 
-        EditText UserNum;
-        UserNum = (EditText) findViewById(R.id.sortNumber);
+        EditText UserNum = (EditText) findViewById(R.id.sortNumber);
         String textUserNum = UserNum.getText().toString();
 
         int numRandom = (int) Math.floor(Math.random() * 99 + 1);
         TextView Intents = (TextView) findViewById(R.id.intents);
-
+        HashMap<String,Integer> userRanking = new HashMap<>();
         button.setOnClickListener(new View.OnClickListener() {
             int intents = 0;
             public void onClick(View v) {
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
                 CharSequence textNumber = "";
                 int numUser = Integer.parseInt(UserNum.getText().toString());
                 intents = intents + 1;
+                EditText textUserName = (EditText) findViewById(R.id.sortNumber);
+                String userName =  textUserName.getText().toString();
                 if (numRandom < numUser) {
                     textNumber = "El teu numero es mes petit \n" + numRandom;
                     UserNum.setText("");
@@ -50,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     textNumber = "El teu numero es correcte";
                     Intent intent = new Intent (v.getContext(), Ranking.class);
-                    intent.putExtra("Pepe", intents);
+                    userRanking.put(userName, intents);
+                    intent.putExtra("Lista", userRanking);
                     startActivity(intent);
                 }
                 int duration = Toast.LENGTH_SHORT;
