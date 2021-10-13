@@ -11,8 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,37 +24,40 @@ public class MainActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.submitButton);
 
         EditText UserNum = (EditText) findViewById(R.id.sortNumber);
-        String textUserNum = UserNum.getText().toString();
 
         int numRandom = (int) Math.floor(Math.random() * 99 + 1);
         TextView Intents = (TextView) findViewById(R.id.intents);
-        HashMap<String,Integer> userRanking = new HashMap<>();
+
+        ArrayList<String> userNameRank = new ArrayList<String>();
+        ArrayList<Integer> userPointsRank = new ArrayList<Integer>();
         button.setOnClickListener(new View.OnClickListener() {
-            int intents = 0;
+            Integer intents = 0;
             public void onClick(View v) {
                 Context context = getApplicationContext();
-                CharSequence textNumber = "";
+                CharSequence textNumber;
                 int numUser = Integer.parseInt(UserNum.getText().toString());
                 intents = intents + 1;
-                EditText textUserName = (EditText) findViewById(R.id.sortNumber);
+                EditText textUserName = (EditText) findViewById(R.id.userName);
                 String userName =  textUserName.getText().toString();
                 if (numRandom < numUser) {
                     textNumber = "El teu numero es mes petit \n" + numRandom;
                     UserNum.setText("");
                     Intents.setText("");
-                    Intents.setText("Intents totals:" + intents);
+                    Intents.setText(String.valueOf(intents));
                 }
                 else if (numRandom > numUser){
                     textNumber = "El teu numero es mes gran \n" + numRandom;
                     UserNum.setText("");
                     Intents.setText("");
-                    Intents.setText("Intents totals:" + intents);
+                    Intents.setText(String.valueOf(intents));
                 }
                 else{
                     textNumber = "El teu numero es correcte";
                     Intent intent = new Intent (v.getContext(), Ranking.class);
-                    userRanking.put(userName, intents);
-                    intent.putExtra("Lista", userRanking);
+                    userNameRank.add(userName);
+                    userPointsRank.add(intents);
+                    intent.putStringArrayListExtra("userName", userNameRank);
+                    intent.putIntegerArrayListExtra("userPoints", userPointsRank);
                     startActivity(intent);
                 }
                 int duration = Toast.LENGTH_SHORT;
