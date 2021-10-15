@@ -1,21 +1,31 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.os.Bundle;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.*;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 public class Ranking extends AppCompatActivity {
+        class Record{
+            public int intents;
+            public String nom;
 
-    @Override
+            public Record(int _intents, String _nom ) {
+                intents = _intents;
+                nom = _nom;
+            }
+        }
+    ArrayList<Record> records;
+    ArrayAdapter<Record> adapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ranking);
+        setContentView(R.layout.ranking_view);
+
+        records = new ArrayList<Record>();
 
         ArrayList<String> names = (ArrayList<String>) getIntent().getStringArrayListExtra("userName");
         ArrayList<Integer> points = (ArrayList<Integer>) getIntent().getIntegerArrayListExtra("userPoints");
@@ -23,26 +33,23 @@ public class Ranking extends AppCompatActivity {
         for (int i = 0; i < names.size(); i++) {
             String name = names.get(i);
             Integer point = points.get(i);
-
-            TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            TableRow.LayoutParams params2 = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            TableLayout tbl = (TableLayout) findViewById(R.id.rankingTable);
-
-            TableRow row = new TableRow(this);
-            TextView txt1 = new TextView(this);
-            TextView txt2 = new TextView(this);
-
-            txt1.setText(name);
-            txt2.setText(point);
-
-            txt1.setLayoutParams(params1);
-            txt2.setLayoutParams(params1);
-
-            row.addView(txt1);
-            row.addView(txt2);
-
-            row.setLayoutParams(params2);
-            tbl.addView(row);
+            records.add( new Record(point,name) );
         }
+        adapter = new ArrayAdapter<Record>( this, R.layout.list_item, records )
+        {
+            @Override
+            public View getView ( int pos, View convertView, ViewGroup container)
+            {
+                if (convertView == null) {
+                    // inicialitzem l'element la View amb el seu layout
+                    convertView = getLayoutInflater().inflate(R.layout.list_item, container, false);
+                }
+                ((TextView) convertView.findViewById(R.id.nom)).setText(getItem(pos).nom);
+                ((TextView) convertView.findViewById(R.id.punts)).setText(String.valueOf(getItem(pos).intents));
+                return convertView;
+            }
+        };
+        ListView lv = (ListView) findViewById(R.id.recordsView);
+        lv.setAdapter(adapter);
     }
 }
