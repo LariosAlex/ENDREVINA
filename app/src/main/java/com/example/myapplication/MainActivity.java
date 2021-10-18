@@ -2,9 +2,12 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 CharSequence textNumber;
                 int numUser = Integer.parseInt(UserNum.getText().toString());
                 intents = intents + 1;
-                EditText textUserName = (EditText) findViewById(R.id.userName);
-                String userName =  textUserName.getText().toString();
                 if (numRandom < numUser) {
                     textNumber = "El teu numero es mes petit \n" + numRandom;
                     UserNum.setText("");
@@ -53,13 +54,32 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     textNumber = "El teu numero es correcte";
-                    Intent intent = new Intent (v.getContext(), Ranking.class);
-                    userNameRank.add(userName);
-                    userPointsRank.add(intents);
-                    intent.putStringArrayListExtra("userName", userNameRank);
-                    intent.putIntegerArrayListExtra("userPoints", userPointsRank);
-                    startActivity(intent);
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                    alert.setTitle("HAS GANADO. ENHORABUENA!");
+                    alert.setMessage("NUMERO SECRETO: "+numRandom+"\nNUMERO DE INTENTOS: "+String.valueOf(intents)+ "\n     INTRODUCE TU NOMBRE:");
+
+                    // Set an EditText view to get user input
+                    final EditText input = new EditText(MainActivity.this);
+                    alert.setView(input);
+                    if(input.getText() != null) {
+                        alert.setPositiveButton("RANKING", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String userName = input.getText().toString();
+                                System.out.println(userName);
+                                String message = String.valueOf(userName + " " + intents);
+                                userNameRank.add(userName);
+                                userPointsRank.add(intents);
+                                Intent intent = new Intent(v.getContext(), Ranking.class);
+                                intent.putStringArrayListExtra("userName", userNameRank);
+                                intent.putIntegerArrayListExtra("userPoints", userPointsRank);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    alert.show();
                 }
+
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(context, textNumber, duration);
                 toast.show();
