@@ -17,8 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-
+    static ArrayList<String> userNameRank = new ArrayList<String>();
+    static ArrayList<Integer> userPointsRank = new ArrayList<Integer>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         int numRandom = (int) Math.floor(Math.random() * 99 + 1);
         TextView Intents = (TextView) findViewById(R.id.intents);
 
-        ArrayList<String> userNameRank = new ArrayList<String>();
-        ArrayList<Integer> userPointsRank = new ArrayList<Integer>();
         button.setOnClickListener(new View.OnClickListener() {
             Integer intents = 0;
             public void onClick(View v) {
@@ -57,11 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
                     AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                     alert.setTitle("HAS GANADO. ENHORABUENA!");
-                    alert.setMessage("NUMERO SECRETO: "+numRandom+"\nNUMERO DE INTENTOS: "+String.valueOf(intents)+ "\n     INTRODUCE TU NOMBRE:");
+                    alert.setMessage("Numero Secreto: "+numRandom+"\nNumero de intentos: "+String.valueOf(intents)+ "\n     INTRODUCE TU NOMBRE:");
 
                     // Set an EditText view to get user input
                     final EditText input = new EditText(MainActivity.this);
                     alert.setView(input);
+
                     if(input.getText() != null) {
                         alert.setPositiveButton("RANKING", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
